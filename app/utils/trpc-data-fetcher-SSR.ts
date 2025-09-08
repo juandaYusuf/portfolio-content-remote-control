@@ -1,32 +1,34 @@
-import type { AppRouter } from "../../server/trpc/routers"
-import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
+import type { AppRouter } from '../../server/trpc/routers'
+import type { inferRouterInputs, inferRouterOutputs, AnyRouter } from '@trpc/server'
 
-function toKebabCase(str: string) {
-  return str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
+type TProcedure<
+  T extends AnyRouter,
+  K extends keyof T['_def']['procedures'],
+> = T['_def']['procedures'][K]['_def']['type']
+const toKebabCase = (str: string) => {
+  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 }
 
-async function trpcDataFetcherSSR<E extends keyof inferRouterInputs<AppRouter>>(
-  endpointName: E,
-  method: "POST",
-  reqBody: inferRouterInputs<AppRouter>[E]
-): Promise<inferRouterOutputs<AppRouter>[E]>
-
-async function trpcDataFetcherSSR<E extends keyof inferRouterInputs<AppRouter>>(
-  endpointName: E,
-  method: "GET",
-  reqBody: inferRouterInputs<AppRouter>[E]
-): Promise<inferRouterOutputs<AppRouter>[E]>
-
-
-async function trpcDataFetcherSSR<E extends keyof inferRouterInputs<AppRouter>>(
-  endpointName: E,
-  method: "POST" | "GET",
-  reqBody?: inferRouterInputs<AppRouter>[E]
-) {
-  return await $fetch<inferRouterOutputs<AppRouter>[E]>(`/api/${toKebabCase(endpointName as string)}`, {
-    method,
-    ...(method === "POST" ? { body: reqBody } : {}),
-  })
+// Ambil tipe procedure (query | mutation)
+export const trpcDataFetcherSSR = <E extends keyof AppRouter['_def']['procedures']>(
+  endpointName: E
+): TProcedure<AppRouter, E> extends 'query'
+  ? {
+      query: (input?: inferRouterInputs<AppRouter>[E]) => Promise<inferRouterOutputs<AppRouter>[E]>
+    }
+  : {
+      mutate: (input: inferRouterInputs<AppRouter>[E]) => Promise<inferRouterOutputs<AppRouter>[E]>
+    } => {
+  return {
+    query: async (input?: inferRouterInputs<AppRouter>[E]) =>
+      await $fetch<inferRouterOutputs<AppRouter>[E]>(
+        `/api/${toKebabCase(endpointName as string)}`,
+        { method: 'GET', query: input }
+      ),
+    mutate: async (input: inferRouterInputs<AppRouter>[E]) =>
+      await $fetch<inferRouterOutputs<AppRouter>[E]>(
+        `/api/${toKebabCase(endpointName as string)}`,
+        { method: 'POST', body: input }
+      ),
+  } as any
 }
-
-export default trpcDataFetcherSSR

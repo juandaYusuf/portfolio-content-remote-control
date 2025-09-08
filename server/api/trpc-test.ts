@@ -1,13 +1,9 @@
-import { getQuery, defineEventHandler } from "h3"
-import { appRouter } from "../../server/trpc/routers"
+import { type AppRouter, appRouter } from '../../server/trpc/routers'
+import type { inferRouterInputs } from '@trpc/server'
 
 export default defineEventHandler(async (event) => {
-  const fromQuery = getQuery(event)
-  const body = await readBody(event)
-  const { name } = body
-  console.log(fromQuery)
-  console.log(body)
+  const body = await readBody<inferRouterInputs<AppRouter>['trpcTest']>(event)
   const caller = appRouter.createCaller({})
-  const greeting = await caller.trpcTest({ name: name || "gk masuk" })
-  return greeting
+  const trpcTestSSR = await caller.trpcTest({ name: body.name })
+  return trpcTestSSR
 })

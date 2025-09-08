@@ -1,6 +1,5 @@
-import { initTRPC } from "@trpc/server"
-import type { H3Event } from "h3"
-import z from "zod"
+import { initTRPC } from '@trpc/server'
+import type { H3Event } from 'h3'
 
 export const createTRPCContext = async (event: H3Event) => {
   /**
