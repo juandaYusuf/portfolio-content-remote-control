@@ -1,11 +1,12 @@
-import { baseProcedure, createTRPCRouter } from '../init'
-import { z } from 'zod'
-import { add , showAll} from '../routers/user'
-// import { showAll } from './user/show'
+import { createTRPCRouter } from '../init'
+import * as user from '../routers/user'
 
 export const appRouter = createTRPCRouter({
-  addUser :add,
-  showAllUser : showAll
+  user: {
+    add: user.add,
+    list: user.list,
+    remove: user.remove
+  },
 })
 
 // export type definition of API

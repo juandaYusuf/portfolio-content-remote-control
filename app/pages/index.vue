@@ -21,23 +21,50 @@
     <!-- 
       <UButton label="Refetch" @click="refetchHandler" />
       <p v-if="pending">Loading...</p>
-      <p>{{ data }}</p>
+      <p v-for="user in usersListData">{{ user }}</p>
+      <p>{{ moment.utc(usersAddData?.[0]?.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</p>
     -->
+    <p>{{ usersAddData }}</p>
+    <p>{{ error }}</p>
     <UTimeline :default-value="2" :items="items" class="w-96" />
   </div>
 </template>
 <script setup lang="ts">
 import type { TimelineItem } from '@nuxt/ui'
+import moment from 'moment'
+
 const { $trpc } = useNuxtApp()
-// const { data, error, pending, refresh } = await useAsyncData('addUser', () =>
-//   trpcDataFetcherSSR('addUser').mutate({create: { name: 'ucup', email: 'uucup@gmail.com'}})
+// const { data: usersAddData } = await useAsyncData('addUser', () =>
+//   $fetch('/api/add-user', {
+//     method: 'POST',
+//     body: {
+//       name: 'John Doe',
+//       email: '4i9bD@example.com',
+//     },
+//   })
 // )
-const { data } = useAsyncData('showAllUser', () => $trpc.showAllUser.showAll.query(), {
-  server: false,
-})
+const { data: usersAddData, error } = await useAsyncData('addUser', () =>
+  $fetch('/api/user', {
+    method: 'DELETE',
+    body: {
+      id: 3,
+    },
+  })
+)
+// const { data: usersListData } = await useAsyncData('userList', () => $trpc.user.list.query(), {
+//   server: false,
+// })
+
 // const refetchHandler = () => {
 //   refresh()
 // }
+
+// watch(
+//   () => usersAddData.value,
+//   (newValue) => {
+//     console.log(moment.utc(newValue?.[0]?.createdAt).local().format('YYYY-MM-DD HH:mm:ss'))
+//   }
+// )
 const items = ref<TimelineItem[]>([
   {
     date: 'Mar 15, 2025',
