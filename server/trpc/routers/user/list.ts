@@ -1,8 +1,10 @@
 import { TRPCError } from '@trpc/server'
 import { baseProcedure, createTRPCRouter } from '../../init'
+import { isAuthed } from '../../middleware/auth'
 
 const { list } = createTRPCRouter({
   list: baseProcedure
+  .use(isAuthed)
   .query(async ({ ctx }) => {
     try {
       return await ctx.prisma.user.findMany()

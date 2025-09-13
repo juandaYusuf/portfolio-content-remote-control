@@ -13,7 +13,7 @@ const { add } = createTRPCRouter({
             email: input.email,
           },
         })
-      }catch (err: any) {
+      } catch (err: any) {
         if (err.code === 'P2002') {
           throw new TRPCError({
             code: 'CONFLICT',
@@ -28,4 +28,4 @@ const { add } = createTRPCRouter({
     }),
 })
 
-export default add 
+export default add

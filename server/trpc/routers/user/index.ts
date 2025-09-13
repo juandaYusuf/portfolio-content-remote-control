@@ -1,5 +1,5 @@
 import add from './add'
-import list  from './show'
+import list  from './list'
 import remove from './remove'
 export {
   add,

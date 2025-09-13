@@ -23,9 +23,10 @@
       <p v-if="pending">Loading...</p>
       <p v-for="user in usersListData">{{ user }}</p>
       <p>{{ moment.utc(usersAddData?.[0]?.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</p>
+      <p class="text-red-500" >{{ error }}</p>
+      <p>{{ usersListData }}</p>
     -->
     <p>{{ usersAddData }}</p>
-    <p>{{ error }}</p>
     <UTimeline :default-value="2" :items="items" class="w-96" />
   </div>
 </template>
@@ -35,20 +36,17 @@ import moment from 'moment'
 
 const { $trpc } = useNuxtApp()
 // const { data: usersAddData } = await useAsyncData('addUser', () =>
-//   $fetch('/api/add-user', {
+//   $fetch('/api/user', {
 //     method: 'POST',
 //     body: {
-//       name: 'John Doe',
-//       email: '4i9bD@example.com',
+//       name: 'ucup',
+//       email: 'ucup@example.com',
 //     },
 //   })
 // )
 const { data: usersAddData, error } = await useAsyncData('addUser', () =>
-  $fetch('/api/user', {
-    method: 'DELETE',
-    body: {
-      id: 3,
-    },
+  $fetch('/api/users', {
+    method: 'GET',
   })
 )
 // const { data: usersListData } = await useAsyncData('userList', () => $trpc.user.list.query(), {
