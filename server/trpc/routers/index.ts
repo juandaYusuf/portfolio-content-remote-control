@@ -1,11 +1,16 @@
 import { createTRPCRouter } from '../init'
 import * as user from '../routers/user'
+import * as auth from '../routers/auth'
 
 export const appRouter = createTRPCRouter({
   user: {
-    add: user.add,
+    signUp: user.signUp,
+    signIn: user.signIn,
     list: user.list,
-    remove: user.remove
+    remove: user.remove,
+  },
+  auth: {
+    refresh: auth.refresh,
   },
 })
 

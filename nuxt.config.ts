@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ['trpc-nuxt'],
   },
+  runtimeConfig: {
+    jwtSecretKey: process.env.JWT_SECRET_KEY,
+  },
   modules: ['@nuxt/ui', '@nuxt/eslint', '@nuxt/image', '@nuxt/scripts'],
 
   css: ['~/assets/css/main.css'],

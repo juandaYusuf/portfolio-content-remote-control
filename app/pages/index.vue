@@ -26,7 +26,6 @@
       <p class="text-red-500" >{{ error }}</p>
       <p>{{ usersListData }}</p>
     -->
-    <p>{{ usersAddData }}</p>
     <UTimeline :default-value="2" :items="items" class="w-96" />
   </div>
 </template>
@@ -44,11 +43,11 @@ const { $trpc } = useNuxtApp()
 //     },
 //   })
 // )
-const { data: usersAddData, error } = await useAsyncData('addUser', () =>
-  $fetch('/api/users', {
-    method: 'GET',
-  })
-)
+// const { data: usersAddData, error } = await useAsyncData('addUser', () =>
+//   $fetch('/api/users', {
+//     method: 'GET',
+//   })
+// )
 // const { data: usersListData } = await useAsyncData('userList', () => $trpc.user.list.query(), {
 //   server: false,
 // })

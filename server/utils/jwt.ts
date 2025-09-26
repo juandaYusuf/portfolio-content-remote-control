@@ -1,21 +1,31 @@
 import jwt from 'jsonwebtoken'
+import { createError } from '#imports'
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY
+const config = useRuntimeConfig()
 
 export function signJwt(payload: string | Buffer | object, expiresIn: string = '1h'): string {
-  if (!SECRET_KEY) {
-    throw new Error('SECRET_KEY is not defined')
+  if (!config.jwtSecretKey) {
+    throw createError({
+      status: 401,
+      statusMessage: 'Secret key is not defined',
+    })
   }
-  return jwt.sign(payload, SECRET_KEY, { algorithm: 'HS256', expiresIn: expiresIn } as any)
+  return jwt.sign(payload, config.jwtSecretKey, { algorithm: 'HS256', expiresIn: expiresIn } as any)
 }
-// verifikasi token
+
 export function verifyJwt<T>(token: string): T | null {
   try {
-    if (!SECRET_KEY) {
-      throw new Error('SECRET_KEY is not defined')
+    if (!config.jwtSecretKey) {
+      throw createError({
+        status: 401,
+        statusMessage: 'Secret key is not defined',
+      })
     }
-    return jwt.verify(token, SECRET_KEY) as T
+    return jwt.verify(token, config.jwtSecretKey) as T
   } catch {
-    return null
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Invalid or expired token',
+    })
   }
 }

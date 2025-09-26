@@ -16,6 +16,7 @@ export const createTRPCContext = async (event: H3Event) => {
   }
 
   return {
+    event,
     user,
     prisma,
   }
@@ -36,3 +37,4 @@ const t = initTRPC.context<TRPCContext>().create({
 export const createTRPCRouter = t.router
 export const createCallerFactory = t.createCallerFactory
 export const baseProcedure = t.procedure
+export const tRPCContext = t

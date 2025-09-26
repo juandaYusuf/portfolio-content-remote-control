@@ -1,12 +1,18 @@
-import { TRPCError } from "@trpc/server"
-import { initTRPC } from "@trpc/server"
-import type { TRPCContext } from "../init"
+import { TRPCError } from '@trpc/server'
+import { tRPCContext } from '../init'
 
-const t = initTRPC.context<TRPCContext>().create()
-
-export const isAuthed = t.middleware(({ ctx, next }) => {
+export const isAuthed = tRPCContext.middleware(({ ctx, next }) => {
   if (!ctx.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" })
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'Authentication required',
+      cause: new Error('Access denied: no user found in context'),
+    })
   }
-  return next({ ctx: { ...ctx, user: ctx.user } })
+  return next({
+    ctx: {
+      ...ctx,
+      user: ctx.user,
+    },
+  })
 })
