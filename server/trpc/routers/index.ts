@@ -11,6 +11,7 @@ export const appRouter = createTRPCRouter({
   },
   auth: {
     refresh: auth.refresh,
+    logout : auth.logout
   },
 })
 

@@ -61,8 +61,6 @@
       />
     </UForm>
   </div>
-
-  <UButton label="Test Refresh token" @click="testRefreshToken" />
 </template>
 
 <style>
@@ -101,9 +99,15 @@ async function onSubmit(event: FormSubmitEvent<z.output<typeof schema>>) {
         username,
         password,
       })
-      const { accessToken, ...user } = res
+      const { ...user } = res
       localStorage.setItem('user-info', JSON.stringify(user))
-      userAuth.value.accessToken = accessToken
+      reloadNuxtApp({
+        path: '/dashboard',
+      })
+      userAuth.value.createdAt = user.createdAt
+      userAuth.value.id = user.id
+      userAuth.value.name = user.name
+      userAuth.value.username = user.username
     } catch (error: any) {
       if (error instanceof TRPCClientError) {
         toast.add({ title: 'Error', description: error.message, color: 'error' })
@@ -113,11 +117,10 @@ async function onSubmit(event: FormSubmitEvent<z.output<typeof schema>>) {
     } finally {
       isSignInLoading.value = false
       Object.keys(state).forEach((key) => ((state as Record<string, string>)[key] = ''))
+      console.log(userAuth.value)
     }
   }
 }
 
-const testRefreshToken = async () => {
-  console.log(userAuth.value)
-}
+const testRefreshToken = async () => {}
 </script>

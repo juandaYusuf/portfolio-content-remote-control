@@ -5,11 +5,10 @@ import { signJwt } from '../../../utils/jwt'
 import bcrypt from 'bcrypt'
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../../../utils/jwt-config'
 
-
 const { signIn } = createTRPCRouter({
   signIn: baseProcedure
     .input(
-      z.object({  
+      z.object({
         username: z.string(),
         password: z.string(),
       })
@@ -46,7 +45,7 @@ const { signIn } = createTRPCRouter({
             path: '/',
             maxAge: REFRESH_TOKEN_EXPIRES_IN / 1000,
           })
-          return { accessToken, ...user }
+          return user
         } else {
           throw new TRPCError({
             code: 'NOT_FOUND',

@@ -3,17 +3,14 @@ import { baseProcedure, createTRPCRouter } from '../../init'
 import { isAuthed } from '../../middleware/auth'
 
 const { list } = createTRPCRouter({
-  list: baseProcedure
-  .use(isAuthed)
-  .query(async ({ ctx }) => {
+  list: baseProcedure.use(isAuthed).query(async ({ ctx }) => {
     try {
-      return await ctx.prisma.user.findMany()
+      const list = await ctx.prisma.user.findMany()
+      const safeList = list.map(({ password, ...user }) => user)
+      return safeList
     } catch (err: any) {
-      if (err.code === 'P2025') {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
-        })
+      if (err instanceof TRPCError) {
+        throw err
       }
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

@@ -36,17 +36,7 @@ const { refresh } = createTRPCRouter({
 
       return { accessToken: newAccessToken }
     } catch (err: any) {
-      if (err instanceof TRPCError) {
-        throw err
-      }
-
-      if (err.statusCode) {
-        throw new TRPCError({
-          code: err.statusCode === 401 ? 'UNAUTHORIZED' : 'INTERNAL_SERVER_ERROR',
-          message: err.statusMessage || 'Unexpected error',
-        })
-      }
-
+      if (err instanceof TRPCError) throw err
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Something went wrong',

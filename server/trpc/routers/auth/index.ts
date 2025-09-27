@@ -1,2 +1,3 @@
 import refresh from './refresh'
-export { refresh }
+import logout from './logout'
+export { refresh, logout }
