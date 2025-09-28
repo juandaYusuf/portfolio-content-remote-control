@@ -50,7 +50,7 @@
         variant="soft"
         :color="isSignInLoading ? 'neutral' : 'primary'"
         icon="i-fluent-cloud-arrow-up-16-regular"
-        class="border border-(--ui-primary) active:scale-[0.99]"
+        class="border border-(--ui-primary) active:scale-[0.99] shadow"
         :label="isSignInLoading ? 'Signing you in......' : 'Sign in'"
         :loading="isSignInLoading"
         :class="{

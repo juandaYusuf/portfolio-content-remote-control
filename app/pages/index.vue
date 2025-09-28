@@ -1,94 +1,65 @@
 <template>
-  <div class="flex h-screen flex-col items-center justify-center gap-4">
-    <h1 class="text-2xl font-bold text-(--ui-primary)">Nuxt UI - Starter</h1>
-
-    <div class="flex items-center gap-2">
-      <UButton
-        label="Documentation"
-        icon="i-lucide-square-play"
-        to="https://ui.nuxt.com/getting-started/installation/nuxt"
-        target="_blank"
-      />
-      <UButton
-        label="GitHub"
-        color="neutral"
-        variant="outline"
-        icon="i-simple-icons-github"
-        to="https://github.com/nuxt/ui"
-        target="_blank"
-      />
-    </div>
-    <!-- 
-      <UButton label="Refetch" @click="refetchHandler" />
-      <p v-if="pending">Loading...</p>
-      <p v-for="user in usersListData">{{ user }}</p>
-      <p>{{ moment.utc(usersAddData?.[0]?.createdAt).local().format('YYYY-MM-DD HH:mm:ss') }}</p>
-      <p class="text-red-500" >{{ error }}</p>
-      <p>{{ usersListData }}</p>
-    -->
-    <UTimeline :default-value="2" :items="items" class="w-96" />
+  <div class="mb-[0.25rem] flex h-dvh flex-col items-center justify-center border">
+    <p ref="heroSectionRef" class="text-xl font-bold">HERO</p>
+  </div>
+  <div id="skills" class="flex h-dvh flex-col items-center justify-center border">
+    <p id="skills-content" ref="skillsSectionRef" class="text-xl font-bold">SKILLS</p>
+  </div>
+  <div id="projects" class="flex h-dvh flex-col items-center justify-center border">
+    <p id="projects-content" ref="projectsSectionRef" class="text-xl font-bold">PROJECTS</p>
+  </div>
+  <div id="experiences" class="flex h-dvh flex-col items-center justify-center border">
+    <p id="experiences-content" ref="experienceSectionRef" class="text-xl font-bold">EXPERIENCES</p>
+  </div>
+  <div id="educations" class="flex h-dvh flex-col items-center justify-center border">
+    <p id="educations-content" ref="educationsSectionRef" class="text-xl font-bold">EDUCATIONS</p>
   </div>
 </template>
+
 <script setup lang="ts">
-import type { TimelineItem } from '@nuxt/ui'
-import moment from 'moment'
+const routeActive = useRouteActive()
+const heroSectionRef = ref<HTMLDivElement>()
+const skillsSectionRef = ref<HTMLDivElement>()
+const projectsSectionRef = ref<HTMLDivElement>()
+const experienceSectionRef = ref<HTMLDivElement>()
+const educationsSectionRef = ref<HTMLDivElement>()
 
-const { $trpc } = useNuxtApp()
-// const { data: usersAddData } = await useAsyncData('addUser', () =>
-//   $fetch('/api/user', {
-//     method: 'POST',
-//     body: {
-//       name: 'ucup',
-//       email: 'ucup@example.com',
-//     },
-//   })
-// )
-// const { data: usersAddData, error } = await useAsyncData('addUser', () =>
-//   $fetch('/api/users', {
-//     method: 'GET',
-//   })
-// )
-// const { data: usersListData } = await useAsyncData('userList', () => $trpc.user.list.query(), {
-//   server: false,
-// })
+const intersectInit = () => {
+  const options = {
+    root: document.querySelector('#scrollArea'),
+    rootMargin: '0px',
+    scrollMargin: '0px',
+    threshold: 1.0,
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        if (!!entry.target.id) {
+          const hashUrl = `#${entry.target.id.split('-')[0]}`
+          routeActive.value.path = hashUrl
+          setHashSilently(hashUrl)
+        } else {
+          setHashSilently('/')
+          routeActive.value.path = '/'
+        }
+      }
+    })
+  }, options)
 
-// const refetchHandler = () => {
-//   refresh()
-// }
+  if (
+    heroSectionRef.value &&
+    skillsSectionRef.value &&
+    projectsSectionRef.value &&
+    experienceSectionRef.value &&
+    educationsSectionRef.value
+  ) {
+    observer.observe(heroSectionRef.value)
+    observer.observe(skillsSectionRef.value)
+    observer.observe(projectsSectionRef.value)
+    observer.observe(experienceSectionRef.value)
+    observer.observe(educationsSectionRef.value)
+  }
+}
 
-// watch(
-//   () => usersAddData.value,
-//   (newValue) => {
-//     console.log(moment.utc(newValue?.[0]?.createdAt).local().format('YYYY-MM-DD HH:mm:ss'))
-//   }
-// )
-const items = ref<TimelineItem[]>([
-  {
-    date: 'Mar 15, 2025',
-    title: 'Project Kickoff',
-    description:
-      'Kicked off the project with team alignment. Set up project milestones and allocated resources.',
-    icon: 'i-lucide-rocket',
-  },
-  {
-    date: 'Mar 22 2025',
-    title: 'Design Phase',
-    description:
-      'User research and design workshops. Created wireframes and prototypes for user testing.',
-    icon: 'i-lucide-palette',
-  },
-  {
-    date: 'Mar 29 2025',
-    title: 'Development Sprint',
-    description:
-      'Frontend and backend development. Implemented core features and integrated with APIs.',
-    icon: 'i-lucide-code',
-  },
-  {
-    date: 'Apr 5 2025',
-    title: 'Testing & Deployment',
-    description: 'QA testing and performance optimization. Deployed the application to production.',
-    icon: 'i-lucide-check-circle',
-  },
-])
+onMounted(intersectInit)
 </script>
