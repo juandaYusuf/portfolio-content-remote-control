@@ -1,18 +1,34 @@
 <template>
-  <div class="mb-[0.25rem] flex h-dvh flex-col items-center justify-center border">
-    <p ref="heroSectionRef" class="text-xl font-bold">HERO</p>
+  <div class="relative flex h-dvh flex-col items-center justify-center border">
+    <div ref="heroSectionRef" class="pointer-events-none absolute text-xl font-bold opacity-0" />
   </div>
-  <div id="skills" class="flex h-dvh flex-col items-center justify-center border">
-    <p id="skills-content" ref="skillsSectionRef" class="text-xl font-bold">SKILLS</p>
+  <div id="skills" class="relative flex h-dvh flex-col items-center justify-center border">
+    <div
+      id="skills-content"
+      ref="skillsSectionRef"
+      class="pointer-events-none absolute text-xl font-bold opacity-0"
+    />
   </div>
-  <div id="projects" class="flex h-dvh flex-col items-center justify-center border">
-    <p id="projects-content" ref="projectsSectionRef" class="text-xl font-bold">PROJECTS</p>
+  <div id="projects" class="relative flex h-dvh flex-col items-center justify-center border">
+    <div
+      id="projects-content"
+      ref="projectsSectionRef"
+      class="pointer-events-none absolute text-xl font-bold opacity-0"
+    />
   </div>
-  <div id="experiences" class="flex h-dvh flex-col items-center justify-center border">
-    <p id="experiences-content" ref="experienceSectionRef" class="text-xl font-bold">EXPERIENCES</p>
+  <div id="experiences" class="relative flex h-dvh flex-col items-center justify-center border">
+    <div
+      id="experiences-content"
+      ref="experienceSectionRef"
+      class="pointer-events-none absolute text-xl font-bold opacity-0"
+    />
   </div>
-  <div id="educations" class="flex h-dvh flex-col items-center justify-center border">
-    <p id="educations-content" ref="educationsSectionRef" class="text-xl font-bold">EDUCATIONS</p>
+  <div id="educations" class="relative flex h-dvh flex-col items-center justify-center border">
+    <div
+      id="educations-content"
+      ref="educationsSectionRef"
+      class="pointer-events-none absolute text-xl font-bold opacity-0"
+    />
   </div>
 </template>
 

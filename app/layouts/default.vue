@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed bottom-0 flex h-[max-content] w-full items-center justify-center gap-2 md:top-0 md:px-2 md:pt-2"
+    class="fixed bottom-0 z-50 flex h-[max-content] w-full items-center justify-center gap-2 md:top-0 md:px-2 md:pt-2"
   >
     <div
       class="flex h-16 w-screen items-center justify-between gap-2 border-t border-gray-300 bg-gray-200/50 px-2 shadow backdrop-blur-lg md:h-[max-content] md:w-[max-content] md:rounded-full md:border dark:border-gray-700 dark:bg-gray-800/50"
