@@ -1,6 +1,7 @@
 <template>
   <div class="relative flex h-dvh flex-col items-center justify-center border">
     <div ref="heroSectionRef" class="pointer-events-none absolute text-xl font-bold opacity-0" />
+  <Home/>
   </div>
   <div id="skills" class="relative flex h-dvh flex-col items-center justify-center border">
     <div

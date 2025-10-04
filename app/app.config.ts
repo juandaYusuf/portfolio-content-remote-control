@@ -25,5 +25,11 @@ export default defineAppConfig({
         ],
       },
     },
+    popover: {
+      slots: {
+        content: 'bg-neutral-200/40 dark:bg-neutral-800/40 backdrop-blur-md shadow-lg rounded-md ring ring-default data-[state=open]:animate-[scale-in_100ms_ease-out] data-[state=closed]:animate-[scale-out_100ms_ease-in] origin-(--reka-popover-content-transform-origin) focus:outline-none pointer-events-auto',
+        arrow: 'fill-default'
+      }
+    }
   },
 })
